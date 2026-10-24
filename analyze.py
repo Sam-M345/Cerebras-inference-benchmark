@@ -1,7 +1,7 @@
 """
 Analysis (Phase 5): statistics, summary table, and charts.
 
-Reads results/benchmark_scored.jsonl and results/manual_review.json, then writes:
+Reads results/benchmark_scored_v2.jsonl and results/manual_review_v2.json, then writes:
   results/summary.csv               one row per test and service
   charts/time_to_first_answer.png   chart 1
   charts/output_speed.png           chart 2
@@ -25,11 +25,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from estimate_cost import PRICES
+from score import OUTPUT_FILE as SCORED_FILE
 
 RESULTS_DIR = Path("results")
 CHARTS_DIR = Path("charts")
-SCORED_FILE = RESULTS_DIR / "benchmark_scored.jsonl"
-MANUAL_REVIEW_FILE = RESULTS_DIR / "manual_review.json"
+MANUAL_REVIEW_FILE = RESULTS_DIR / "manual_review_v2.json"
 SUMMARY_FILE = RESULTS_DIR / "summary.csv"
 
 TESTS = ("short", "long")
@@ -54,17 +54,20 @@ def load_measured():
 
 
 def summarize(frame, manual_verdicts):
+    verdict_by_run = {(v["service"], v["run_id"]): v["verdict"] for v in manual_verdicts}
     rows = []
     for test in TESTS:
         for service in SERVICES:
             runs = frame[(frame["test"] == test) & (frame["service"] == service)]
             ok = runs[runs["error"].isna()]
-            reviewed = [v for v in manual_verdicts if v["service"] == service and v["test"] == test]
+            missed_verdicts = [verdict_by_run.get((service, run_id))
+                               for run_id in ok[ok["quality_score"] < ok["quality_max"]]["run_id"]]
             row = {
                 "test": test,
                 "service": service,
                 "runs": len(runs),
                 "errors": len(runs) - len(ok),
+                "http_429": int((runs["http_status"] == 429).sum()),
                 "truncated": int(ok["truncated"].sum()),
                 "empty_answers": int(ok["empty_answer"].sum()),
                 "delayed_over_10s": int((ok["first_answer_chunk_s"] > DELAY_THRESHOLD_S).sum()),
@@ -74,31 +77,34 @@ def summarize(frame, manual_verdicts):
                 row[f"{metric}_median"] = values.median()
                 row[f"{metric}_min"] = values.min()
                 row[f"{metric}_max"] = values.max()
+                row[f"{metric}_p5"] = values.quantile(0.05)
                 row[f"{metric}_p95_exploratory"] = values.quantile(0.95)
             row["cost_usd_median"] = ok["cost_usd"].median()
             row["quality_mean_auto"] = ok["quality_score"].mean()
             row["quality_max"] = int(ok["quality_max"].iloc[0])
             row["quality_perfect_auto"] = int((ok["quality_score"] == ok["quality_max"]).sum())
-            row["manual_reviewed"] = len(reviewed)
-            row["manual_correct"] = sum(v["verdict"] == "correct" for v in reviewed)
-            row["manual_imperfect"] = sum(v["verdict"] == "imperfect" for v in reviewed)
+            row["manual_scorer_false_negatives"] = missed_verdicts.count("correct")
+            row["manual_substantive_misses"] = missed_verdicts.count("imperfect")
+            row["manual_unreviewed_misses"] = missed_verdicts.count(None)
+            row["correct_answers"] = row["quality_perfect_auto"] + row["manual_scorer_false_negatives"]
             rows.append(row)
     return pd.DataFrame(rows)
 
 
 def markdown_table(summary):
     lines = [
-        "| Test | Service | Median first answer chunk (s) [min–max] | Median output speed (tok/s) [min–max] | Median total time (s) | Delayed >10 s | Quality (auto, perfect) | Median cost per run |",
+        "| Test | Service | Median first answer chunk (s) [min–max] | Median output speed (tok/s) [5th–95th percentile] | Median total time (s) | Errors (429s) | Correct answers | Median cost per run |",
         "|---|---|---|---|---|---|---|---|",
     ]
     for row in summary.itertuples():
+        pending = f" ({row.manual_unreviewed_misses} pending review)" if row.manual_unreviewed_misses else ""
         lines.append(
             f"| {row.test} | {SERVICE_LABELS[row.service]} "
             f"| {row.first_answer_chunk_s_median:.2f} [{row.first_answer_chunk_s_min:.2f}–{row.first_answer_chunk_s_max:.2f}] "
-            f"| {row.output_tok_per_s_median:,.0f} [{row.output_tok_per_s_min:,.0f}–{row.output_tok_per_s_max:,.0f}] "
+            f"| {row.output_tok_per_s_median:,.0f} [{row.output_tok_per_s_p5:,.0f}–{row.output_tok_per_s_p95_exploratory:,.0f}] "
             f"| {row.total_s_median:.2f} "
-            f"| {row.delayed_over_10s}/{row.runs} "
-            f"| {row.quality_mean_auto:.2f}/{row.quality_max}, {row.quality_perfect_auto}/{row.runs} "
+            f"| {row.errors} ({row.http_429}) "
+            f"| {row.correct_answers}/{row.runs}{pending} "
             f"| ${row.cost_usd_median:.5f} |"
         )
     return "\n".join(lines)
@@ -133,7 +139,12 @@ def strip_chart(frame, metric, title, y_label, output_path, log_scale=False):
         axis.set_facecolor("white")
         if log_scale:
             axis.set_yscale("log")
-            axis.set_yticks(LOG_TICKS, [f"{tick:g}" for tick in LOG_TICKS])
+    if log_scale:
+        low, high = axes[0].get_ylim()
+        ticks = [tick for tick in LOG_TICKS if low <= tick <= high]
+        axes[0].set_yticks(ticks, [f"{tick:g}" for tick in ticks])
+        axes[0].set_ylim(low, high)
+        for axis in axes:
             axis.minorticks_off()
     axes[0].set_ylabel(y_label, fontsize=11)
     fig.suptitle(title, fontsize=15, fontweight="bold")
@@ -165,9 +176,11 @@ def quality_chart(frame, manual_verdicts, output_path):
             missed = runs[runs["quality_score"] < runs["quality_max"]]
             if len(missed):
                 verdicts = [verdict_by_run.get((service, run_id)) for run_id in missed["run_id"]]
+                parts = [f"{verdicts.count('imperfect')} substantive misses",
+                         f"{verdicts.count('correct')} scorer false negatives",
+                         f"{verdicts.count(None)} pending review"]
                 axis.annotate(
-                    f"Manual review: {verdicts.count('imperfect')} substantive misses\n"
-                    f"+ {verdicts.count('correct')} scorer false negative",
+                    "Manual review:\n" + "\n".join(part for part in parts if not part.startswith("0 ")),
                     (position + 0.15, scores.min()), xytext=(position - 0.55, scores.min() - 15),
                     fontsize=9, color="black", arrowprops={"arrowstyle": "->", "color": "black"},
                 )

@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import APIStatusError, OpenAI
 
 # ---------------------------------------------------------------------------
 # Services (both called directly, no routing layer)
@@ -74,7 +74,12 @@ def make_client(service):
     key = os.environ.get(cfg["api_key_env"])
     if not key:
         raise SystemExit(f"Missing environment variable {cfg['api_key_env']}")
-    return OpenAI(base_url=cfg["base_url"], api_key=key)
+    # The SDK default (2) silently waits out a 429's retry-after and retries, hiding the error in the timing
+    return OpenAI(base_url=cfg["base_url"], api_key=key, max_retries=0)
+
+
+def rate_limit_headers(headers):
+    return {name: value for name, value in headers.items() if "ratelimit" in name.lower() or "retry" in name.lower()}
 
 
 def to_dict(obj):
@@ -98,6 +103,8 @@ def run_request(client, service, test, prompt, run_id):
         "run_id": run_id,
         "settings": SETTINGS,
         "error": None,
+        "http_status": None,
+        "rate_limit_headers": None,
     }
     head_chunks = []
     tail_chunks = deque(maxlen=RAW_TAIL_CHUNKS)
@@ -111,14 +118,16 @@ def run_request(client, service, test, prompt, run_id):
 
     t0 = time.perf_counter()
     try:
-        stream = client.chat.completions.create(
+        raw_response = client.chat.completions.with_raw_response.create(
             model=cfg["model"],
             messages=[{"role": "user", "content": full_prompt}],
             stream=True,
             stream_options={"include_usage": True},
             **SETTINGS,
         )
-        for chunk in stream:
+        record["http_status"] = raw_response.status_code
+        record["rate_limit_headers"] = rate_limit_headers(raw_response.headers)
+        for chunk in raw_response.parse():
             t = time.perf_counter() - t0
             chunk_dict = to_dict(chunk)
             saved_chunk = {"index": chunk_count, "t": round(t, 4), "chunk": chunk_dict}
@@ -153,6 +162,9 @@ def run_request(client, service, test, prompt, run_id):
         total_t = time.perf_counter() - t0
     except Exception as e:  # record failures instead of stopping the pilot
         record["error"] = f"{type(e).__name__}: {e}"
+        if isinstance(e, APIStatusError):
+            record["http_status"] = e.status_code
+            record["rate_limit_headers"] = rate_limit_headers(e.response.headers)
         record["raw_chunks"] = head_chunks + list(tail_chunks)
         return record
 

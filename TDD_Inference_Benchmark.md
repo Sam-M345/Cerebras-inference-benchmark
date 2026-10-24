@@ -214,18 +214,14 @@ Every metric must use the **same definition on both services**. If a definition 
 - Report quality scores (mean and count of perfect scores) per service, per test.
 - Never drop a failed run silently. Exclude it from timing statistics, but count and report it.
 
-### Delayed first chunk (found in the full run)
-Five of 40 Cerebras requests waited about 50 to 58 seconds before the first streamed text arrived, then generated at normal speed. Reporting rules:
-- Keep all requests in the raw data and statistics.
-- Show the outliers in chart 1, clearly annotated.
-- Report the median alongside the full-run spread (min to max).
-- State that no rate-limit errors occurred, but that this does not rule out queueing.
-- Do not state that the free tier caused the delays.
-
-Article wording:
-> Five of 40 Cerebras requests experienced an approximately 50–58 second delay before the first streamed text arrived. The requests then generated at normal speed. This may indicate provider-side queueing or scheduling, but the cause cannot be confirmed from client-side measurements.
-
-Key point: median throughput does not fully describe end-to-end reliability or user experience.
+### Retries, 429 handling, and request spacing
+The first full run used the OpenAI SDK default `max_retries=2`, which silently waits out a 429's `retry-after` and retries. On the Cerebras free tier (5 requests per minute), that turned rate-limit rejections into 50 to 58 second "delays." Rules for every run:
+- Create both clients with `max_retries=0`. Never retry a request.
+- Log each request's HTTP status code and rate-limit headers (`x-ratelimit-*`, `retry-after`).
+- Record any 429 as a failed request, count it in the error totals, and stop the run (Section 15).
+- Before a run, send one request per service with retries off and confirm the per-minute request limit from the headers.
+- Use the same pause after every request for both services, long enough that neither service exceeds its per-minute request limit. With a 1,000-per-minute limit, the 2-second pause is sufficient.
+- Write each run to a new results file; never overwrite an earlier run's raw results.
 
 ### Charts (`charts/`)
 1. **Time to first answer chunk**, Test A and Test B, both services, every run shown as a dot with the median marked.

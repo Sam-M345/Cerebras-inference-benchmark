@@ -23,7 +23,8 @@ from pilot_benchmark import RESULTS_DIR, SERVICES, fmt, load_prompt, make_client
 TESTS = ("short", "long")
 PAIRS_PER_TEST = 20
 PAUSE_S = 2  # same pause after every request, both services
-OUTPUT_FILE = RESULTS_DIR / "benchmark_results.jsonl"
+# v1 (benchmark_results.jsonl) used SDK default retries; kept unchanged for the record
+OUTPUT_FILE = RESULTS_DIR / "benchmark_results_v2.jsonl"
 
 
 def service_order(pair_index):
@@ -69,8 +70,8 @@ def main():
                 output.flush()
                 results.append(record)
 
-                if record["error"] and record["error"].startswith("RateLimitError"):
-                    raise SystemExit(f"Rate limited by {service}; stopping. Error: {record['error']}")
+                if record["http_status"] == 429:
+                    raise SystemExit(f"429 from {service}; recorded as failed, stopping. Headers: {record['rate_limit_headers']}")
                 time.sleep(PAUSE_S)
 
     print_summary(results)
@@ -89,7 +90,8 @@ def print_summary(results):
                 return median(values) if values else None
 
             print(
-                f"{test:<6} {service:<9} | runs {len(runs)} | errors {len(runs) - len(ok)} | "
+                f"{test:<6} {service:<9} | runs {len(runs)} | errors {len(runs) - len(ok)} "
+                f"(429s {sum(r['http_status'] == 429 for r in runs)}) | "
                 f"truncated {sum(r['truncated'] for r in ok)} | empty {sum(r['empty_answer'] for r in ok)} | "
                 f"median first answer chunk {fmt(median_of('first_answer_chunk_s'))}s | "
                 f"median output tok/s {fmt(median_of('output_tok_per_s'), 1)} | "

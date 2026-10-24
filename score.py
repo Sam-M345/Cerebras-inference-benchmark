@@ -1,9 +1,9 @@
 """
 Quality scoring (Phase 4): score every response against its checklist.
 
-Reads results/benchmark_results.jsonl (never modified) and writes:
-  results/benchmark_scored.jsonl   copy of every record plus quality fields
-  results/spot_check.md            5 responses per service for Sam to review by hand
+Reads results/benchmark_results_v2.jsonl (never modified) and writes:
+  results/benchmark_scored_v2.jsonl   copy of every record plus quality fields
+  results/spot_check_v2.md            5 responses per service for Sam to review by hand
 
 A response is flagged score_uncertain when it misses any checklist item,
 because keyword matching is more likely to miss a correct answer than to
@@ -18,11 +18,12 @@ import random
 import re
 from pathlib import Path
 
+from benchmark import OUTPUT_FILE as INPUT_FILE
+
 RESULTS_DIR = Path("results")
 PROMPTS_DIR = Path("prompts")
-INPUT_FILE = RESULTS_DIR / "benchmark_results.jsonl"
-OUTPUT_FILE = RESULTS_DIR / "benchmark_scored.jsonl"
-SPOT_CHECK_FILE = RESULTS_DIR / "spot_check.md"
+OUTPUT_FILE = RESULTS_DIR / "benchmark_scored_v2.jsonl"
+SPOT_CHECK_FILE = RESULTS_DIR / "spot_check_v2.md"
 SPOT_CHECKS_PER_SERVICE = 5
 
 HYPHENS_AND_SPACES = re.compile(r"[\u2010-\u2015\u2212\u00a0\u202f\u2009-]")

@@ -1,0 +1,9 @@
+{
+  "reviewer": "Sam Mirazi",
+  "reviewed_on": "2026-10-24",
+  "note": "Manual verdicts on results/spot_check_v2.md for the v2 run. Automatic scores in benchmark_scored_v2.jsonl are unchanged for reproducibility.",
+  "verdicts": [
+    {"service": "together", "test": "short", "run_id": "fc0156a2", "verdict": "correct", "note": "Scorer false negative: says water doesn't need to reach as high a temperature, which the less-heat keywords did not match"},
+    {"service": "together", "test": "short", "run_id": "a41de455", "verdict": "imperfect", "note": "Genuinely omits the vapor-pressure explanation"}
+  ]
+}
