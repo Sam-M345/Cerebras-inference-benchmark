@@ -177,6 +177,7 @@ def run_request(client, service, test, prompt, run_id):
 
     reasoning_window = window(first_reasoning_t, last_reasoning_t)
     answer_window = window(first_answer_t, last_answer_t)
+    generation_window = window(first_reasoning_t, total_t)
 
     record.update(
         {
@@ -193,8 +194,10 @@ def run_request(client, service, test, prompt, run_id):
             "completion_tokens": completion_tokens,
             "reasoning_tokens": reasoning_tokens,
             "answer_tokens": answer_tokens,
-            "reasoning_tok_per_s": speed(reasoning_tokens, reasoning_window),
-            "answer_tok_per_s": speed(answer_tokens, answer_window),
+            "output_tok_per_s": speed(completion_tokens, generation_window),
+            # Exploratory only: per-phase windows span few chunks on Cerebras
+            "reasoning_tok_per_s_exploratory": speed(reasoning_tokens, reasoning_window),
+            "answer_tok_per_s_exploratory": speed(answer_tokens, answer_window),
             "cached_prompt_tokens": cached_tokens,
             "usage_raw": usage,
             "answer_text": "".join(answer_text),
@@ -257,8 +260,7 @@ def main():
                 f"first reasoning chunk {fmt(r['first_reasoning_chunk_s'])}s | "
                 f"first answer chunk {fmt(r['first_answer_chunk_s'])}s | "
                 f"total {fmt(r['total_s'])}s | "
-                f"reasoning tok/s {fmt(r['reasoning_tok_per_s'])} | "
-                f"answer tok/s {fmt(r['answer_tok_per_s'])} | "
+                f"output tok/s {fmt(r['output_tok_per_s'])} | "
                 f"cached prompt tokens {fmt(r['cached_prompt_tokens'])} | "
                 f"finish {r['finish_reason']}"
             )

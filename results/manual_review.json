@@ -1,0 +1,17 @@
+{
+  "reviewer": "Sam Mirazi",
+  "reviewed_on": "2026-10-24",
+  "note": "Manual verdicts on results/spot_check.md. Automatic scores in benchmark_scored.jsonl are unchanged for reproducibility.",
+  "verdicts": [
+    {"service": "cerebras", "test": "short", "run_id": "e609a6a5", "verdict": "correct"},
+    {"service": "cerebras", "test": "short", "run_id": "4a0d972d", "verdict": "correct"},
+    {"service": "cerebras", "test": "short", "run_id": "04ca6ed7", "verdict": "correct"},
+    {"service": "cerebras", "test": "short", "run_id": "70cd2838", "verdict": "correct"},
+    {"service": "cerebras", "test": "short", "run_id": "39782a12", "verdict": "correct"},
+    {"service": "together", "test": "short", "run_id": "0ec142be", "verdict": "correct", "note": "Scorer false negative: says the boiling temperature is reduced, not matched by keywords"},
+    {"service": "together", "test": "short", "run_id": "c447ecc2", "verdict": "imperfect", "note": "Reacted to the run ID as a command and omitted the vapor-pressure explanation"},
+    {"service": "together", "test": "short", "run_id": "d881b001", "verdict": "imperfect", "note": "Reacted to the run ID as a command and omitted the vapor-pressure explanation"},
+    {"service": "together", "test": "short", "run_id": "5e9ff0e5", "verdict": "imperfect", "note": "Reacted to the run ID as a command and omitted the vapor-pressure explanation"},
+    {"service": "together", "test": "long", "run_id": "91ccd1b8", "verdict": "correct"}
+  ]
+}

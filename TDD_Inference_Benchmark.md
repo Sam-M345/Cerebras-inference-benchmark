@@ -182,8 +182,9 @@ The streaming response arrives in **chunks**. A chunk can contain more than one 
 | **Time to first answer chunk** | Request start until the first chunk containing non-empty visible answer text (`delta.content`) |
 | **Reasoning window** | Time of first reasoning chunk to time of last reasoning chunk |
 | **Answer window** | Time of first answer chunk to time of last answer chunk |
-| **Reasoning speed** | Reasoning tokens ÷ reasoning window |
-| **Answer speed** | Answer tokens ÷ answer window |
+| **Output speed** (headline) | Completion tokens ÷ (total response time − time to first reasoning chunk). Uses the full stream, so chunk size does not distort it |
+| **Reasoning speed** (exploratory, raw data only) | Reasoning tokens ÷ reasoning window |
+| **Answer speed** (exploratory, raw data only) | Answer tokens ÷ answer window |
 | **Total response time** | Request start until the stream ends |
 | **Cost per run** | (input tokens × input price) + (output tokens × output price), from each provider's published prices on the test date |
 
@@ -192,6 +193,9 @@ The streaming response arrives in **chunks**. A chunk can contain more than one 
 - Reasoning tokens: expected at `usage.completion_tokens_details.reasoning_tokens`. **Verify in the pilot.**
 - Answer tokens = completion tokens minus reasoning tokens (only if both are reported).
 - If a service does not report a value needed for a metric, mark that metric **"unavailable"** for that service. Never fill it in with a guess, and never compare a measured value against an estimated one.
+
+### Why per-phase speeds are exploratory
+The pilot showed Cerebras sends about 20 to 28 large chunks per response, versus 100 to 256 on Together. The Cerebras answer window is therefore only about 30 ms and spans a few chunks, so reasoning and answer speed are unreliable. They stay in the raw data, labeled exploratory, and are not used in charts or the article.
 
 ### Reasoning text field
 - The reasoning text may arrive in `delta.reasoning`, `delta.reasoning_content`, or another field. The pilot logs every non-empty delta key so we can confirm. Update `REASONING_KEYS` in the code only based on what the pilot actually shows.
@@ -210,9 +214,23 @@ Every metric must use the **same definition on both services**. If a definition 
 - Report quality scores (mean and count of perfect scores) per service, per test.
 - Never drop a failed run silently. Exclude it from timing statistics, but count and report it.
 
+### Delayed first chunk (found in the full run)
+Five of 40 Cerebras requests waited about 50 to 58 seconds before the first streamed text arrived, then generated at normal speed. Reporting rules:
+- Keep all requests in the raw data and statistics.
+- Show the outliers in chart 1, clearly annotated.
+- Report the median alongside the full-run spread (min to max).
+- State that no rate-limit errors occurred, but that this does not rule out queueing.
+- Do not state that the free tier caused the delays.
+
+Article wording:
+> Five of 40 Cerebras requests experienced an approximately 50–58 second delay before the first streamed text arrived. The requests then generated at normal speed. This may indicate provider-side queueing or scheduling, but the cause cannot be confirmed from client-side measurements.
+
+Key point: median throughput does not fully describe end-to-end reliability or user experience.
+
 ### Charts (`charts/`)
 1. **Time to first answer chunk**, Test A and Test B, both services, every run shown as a dot with the median marked.
-2. **Answer speed (tokens per second)**, same layout.
+2. **Output speed (tokens per second)**, same layout.
+3. **Answer quality**, every automatic checklist score shown as a percentage, with the mean and perfect-score count marked.
 
 Chart rules: clear titles, labeled axes with units, the same service color in every chart, readable in both light and dark backgrounds, exported as PNG at a size suitable for Substack (about 1200 px wide).
 
@@ -244,7 +262,8 @@ inference-benchmark/
 │   └── summary.csv
 └── charts/
     ├── time_to_first_answer.png
-    └── answer_speed.png
+    ├── output_speed.png
+    └── quality_score.png
 ```
 
 ---
@@ -328,8 +347,9 @@ Changes allowed in Phase 1: update `REASONING_KEYS`, field paths for token count
   "completion_tokens": 310,
   "reasoning_tokens": 240,
   "answer_tokens": 70,
-  "reasoning_tok_per_s": 960.0,
-  "answer_tok_per_s": 777.8,
+  "output_tok_per_s": 775.0,
+  "reasoning_tok_per_s_exploratory": 960.0,
+  "answer_tok_per_s_exploratory": 777.8,
   "cached_prompt_tokens": null,
   "cache_status": "reported | unknown",
   "usage_raw": {},
