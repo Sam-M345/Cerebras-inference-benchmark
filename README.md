@@ -26,6 +26,8 @@ All 80 measured requests succeeded, with no errors, truncations, or empty answer
 
 ![Output speed](charts/output_speed.png)
 
+![Answer quality](charts/quality_score.png)
+
 ### Notable findings
 
 - **Delayed first chunk.** Five of 40 Cerebras requests experienced an approximately 50–58 second delay before the first streamed text arrived. The requests then generated at normal speed. This may indicate provider-side queueing or scheduling, but the cause cannot be confirmed from client-side measurements. No rate-limit errors occurred, which does not rule out queueing. Median throughput does not fully describe end-to-end reliability or user experience.
