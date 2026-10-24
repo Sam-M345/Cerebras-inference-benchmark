@@ -1,0 +1,35 @@
+{
+  "test": "long",
+  "items": [
+    {
+      "id": "q1_time",
+      "description": "Q1: first abnormal engine indication at 72.564 seconds",
+      "type": "keywords",
+      "any_of": ["72.564"]
+    },
+    {
+      "id": "q1_indication",
+      "description": "Q1: the indication was a drop in engine fuel tank pressure",
+      "type": "keywords",
+      "any_of": ["fuel tank pressure", "fuel pressure", "drop in pressure", "pressure drop"]
+    },
+    {
+      "id": "q2_orbiter_percent",
+      "description": "Q2: about 30 percent of the Orbiter was recovered",
+      "type": "keywords",
+      "any_of": ["30 percent", "30%", "30 %", "thirty percent"]
+    },
+    {
+      "id": "q3_date",
+      "description": "Q3: engines recovered on February 23, 1986",
+      "type": "keywords",
+      "any_of": ["february 23, 1986", "february 23 1986", "feb. 23, 1986", "feb 23, 1986", "23 february 1986", "2/23/1986", "1986-02-23"]
+    },
+    {
+      "id": "q3_depth",
+      "description": "Q3: in about 85 feet of water",
+      "type": "keywords",
+      "any_of": ["85 feet", "85 ft", "85-foot", "85 foot"]
+    }
+  ]
+}

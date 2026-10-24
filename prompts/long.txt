@@ -1,0 +1,140 @@
+Read the following excerpt from a U.S. government report and answer the three questions after it. Answer each question in one or two sentences, using only information stated in the document.
+
+--- DOCUMENT START ---
+
+The consensus of the Commission and participating investigative agencies is that the loss of the Space Shuttle Challenger was caused by a failure in the joint between the two lower segments of the right Solid Rocket Motor. The specific failure was the destruction of the seals that are intended to prevent hot gases from leaking through the joint during the propellant burn of the rocket motor. The evidence assembled by the Commission indicates that no other element of the Space Shuttle system contributed to this failure.
+
+In arriving at this conclusion, the Commission reviewed in detail all available data, reports and records; directed and supervised numerous tests, analyses, and experiments by NASA, civilian contractors and various government agencies; and then developed specific failure scenarios and the range of most probable causative factors. The sections that follow discuss the results of the investigation.
+
+Analysis of the Accident
+
+The results of the accident investigation and analysis will be presented in this and the following sections. Throughout the investigation three critical questions were central to the inquiry, namely:
+
+What were the circumstances surrounding mission 51-L that contributed to the catastrophic termination of that flight in contrast to 24 successful flights preceding it?
+
+What evidence pointed to the right Solid Rocket Booster as the source of the accident as opposed to other elements of the Space Shuttle?
+
+Finally, what was the mechanism of failure?
+
+Using mission data, subsequently completed tests and analyses, and recovered wreckage, the Commission identified all possible faults that could originate in the respective flight elements of the Space Shuttle which might have the potential to lead to loss of the Challenger. Potential contributors to the accident examined by the Commission were the launch pad (exonerated in Chapter IX of this report), the External Tank, the Space Shuttle Main Engines, the Orbiter and related equipment, payload/Orbiter interfaces, the payload, Solid Rocket Boosters and Solid Rocket Motors.
+
+In a parallel effort, the question of sabotage was examined in detail and reviewed by the Commission in executive session. There is no evidence of sabotage, either at the launch pad or during other processes prior to or during launch.
+
+External Tank
+
+The External Tank contains propellants used by the Orbiter's three main engines during Shuttle launch and ascent to orbit. Structurally the tank is attached to and serves as the backbone of the Orbiter and the two Solid Rocket Boosters. Three primary structures-the liquid oxygen tank, the intertank and the liquid hydrogen tank-comprise the configuration. (Figure 1)
+
+The External Tank delivers oxidizer and fuel from the propellant tanks to the Orbiter. The electrical subsystem includes instrumentation sensors, heaters, range safety electronics and explosives, and lightning protection and associated cabling. All flight instrumentation and electrical power are wired directly to the Orbiter. The thermal protection subsystem is the insulation applied to the tank's exterior. Its function is to prevent heat leakage into the propellants, to protect the External Tank from overheating during flight and to minimize ice formation while the Shuttle is on the pad.
+
+Approximately 20 percent of the External Tank structure was recovered after the accident and the majority of the pieces were from the intertank and liquid hydrogen tank. The Commission initially considered all External Tank systems and subsystems in identifying possible faults or failures potentially contributing to the Challenger accident. Those potential contributors were:
+
+Premature detonation of the External Tank range safety system
+
+Structural flaw
+
+Damage at lift-off
+
+Load exceedance
+
+Overheating
+
+The Commission examined the possibility that the STS 51-L accident could have been triggered by accidental detonation of the range safety system explosives. This potential fault was assessed using flight data, observed events, and recovered hardware. Most of the explosive charges for the External Tank emergency destruction system were recovered. Examination of this material established that none of it had exploded and thus could not have contributed to the accident (Photo C & D). Flight data verified that the External Tank range safety system was not activated.
+
+The possibility of an imperfection existing in either the pressurized or nonpressurized External Tank structural elements that could grow to a sufficient size to cause structural failure was examined in detail. All construction history, structural qualification test data, proof test inspection records and x-rays were reviewed. One previously undetected imperfection that was discovered during a reexamination of the x-rays was found in recovered hardware with no propagation indicated. Other data from the pre-launch ice and frost team inspections, film and video coverage, pressurization records and flight data revealed no evidence of leakage. The Commission concluded that no structural imperfections existed that could have grown to a size to create a leak or cause catastrophic failure of the External Tank.
+
+Possible damage to the liquid hydrogen tank at lift off was considered. The ice and frost team observed no vapor or frost that would indicate a leak. The liquid hydrogen vent arm retracted as expected during launch and did not recontact the tank or solid booster. Photo analysis and television monitoring did not indicate that any debris contacted the tank. Therefore, damage to the liquid hydrogen tank at lift off was determined to be highly improbable.
+
+The possibility that abnormally high structural loads caused an External Tank failure was examined. Analysis indicated that there were no excessive loading conditions based on lift off and flight data prior to the explosion. The maximum structural load produced was less than 80 percent of the allowable design load. The structural implications of vent and flow control valve operation was examined and found not to be a factor.
+
+The possibility of a structural failure due to overheating was assessed with several causes postulated: high heating due to abnormal trajectory, loss of the thermal protection system, a hot gas leak from the Solid Rocket Motor and a liquid hydrogen leak from the External Tank. The trajectory was normal until well after the Solid Rocket Motor leak was observed at 58 seconds. Maximum aerodynamic heating would not have occurred until approximately 90 seconds. At 73 seconds, heating was well within tank component structural capability. Based on careful review of pre-launch and flight films and data, the Commission found no evidence that any thermal protection foam was lost during the launch and ascent.
+
+The possibility of a leak from the hydrogen tank resulting in overheating was addressed. Tests indicated that small leaks (0.037 lbs/second) would have been visible. In addition, if there was a liquid hydrogen leak at lift off, it would have been ignited by either the Solid Rocket Booster ignition or Space Shuttle Main Engine ignition.
+
+The resultant flame would have ignited the Solid Rocket Booster attach ring foam insulation almost immediately. Copious quantities of dense black smoke and open flames would be evident in such a case and would have continued for as long as the leak burned. Smoke and flames in these quantities were not observed at lift off nor anytime throughout the flight. It is therefore concluded that an initial liquid hydrogen tank leak was improbable, and that the only possible cause for overheating the tank was the impingement of leaking Solid Rocket Motor gases. This resulted in the ultimate breakup of the External Tank.
+
+The recovered external foam insulation on the External Tank was scorched and discolored in various locations. Burn patterns across the pieces of insulation on the External Tank indicate that various areas were subjected to fire both before and after the External Tank broke up in flight.
+
+The Commission reviewed the External Tank's construction records, acceptance testing, pre-launch and flight data, and recovered hardware and found nothing relating to the External Tank that caused or contributed to the cause of the accident.
+
+Space Shuttle Main Engines
+
+A cluster of three Space Shuttle Main Engines operates simultaneously with the Solid Rocket Boosters during the initial ascent phase of flight and provides primary propulsion until the Shuttle has attained orbital velocity. These engines use liquid hydrogen as the fuel and liquid oxygen as the oxidizer. Both the liquid hydrogen and oxygen are stored in the External Tank and are transferred to the engines under pressure. During the mission the engines operate for about 8.5 minutes.
+
+Engine thrust is controlled by throttling and has ranged from 65 to 104 percent of a specified thrust level. At sea level, 100 percent equals 375,000 pounds of thrust per engine.
+
+Pitch, yaw and roll control of the Orbiter is provided by gimbals on each engine. Gimbaling is operated by two hydraulic servo-actuators, one for pitch motion and the other for yaw motion, with roll controlled by a combination of both pitch and yaw. These servo-actuators are commanded by the Orbiter's computer.
+
+An electronic controller is attached to the forward end of each engine. Each controller is a self contained system that monitors engine checkout, control and status, and sends the data to the Orbiter. Each of the three engine interface units in turn sends its data to the Orbiter computers and relays commands from the computers to the engines.
+
+A propellant management subsystem of manifolds, distribution lines and valves controls the flow of liquids from the External Tank to the engines, and the flow of gaseous hydrogen and oxygen from the engines into the External Tank to maintain pressurization.
+
+All three main engines from the Challenger, No. 2020 in position 2, No. 2021 in position 3, and No. 2023 in position 1, were recovered in large part on February 23, 1986, off the Florida coast in about 85 feet of water. All parts were recovered close to one another, and the engines were still attached to the thrust structure. All engine gimbal bearings had failed, apparently because of overload on water impact.
+
+All metallic surfaces were damaged by marine life, except titanium surfaces or those parts that were buried under the ocean bottom. The metal fractures, examined at 3x magnification, showed rough texture and shear lips, which appeared to be caused by overloads due to water impact. No pre-accident material defects were noted.
+
+The engine nozzles were sheared at the manifolds. The main combustion chambers, main injectors and preburners of each engine were attached to one another. The six hydraulic servo-actuators used to control engine gimbaling were attached to segments of the Orbiter thrust structure.
+
+Sections of the main propulsion system fuel and liquid oxygen feedlines and feedline manifolds were recovered, as well as the External Tank/Orbiter disconnect assembly in the mated configuration. A portion of the oxidizer inlet duct was attached to the interface of engine 2020. All preburner valves were recovered.
+
+The main engine controllers for both engines 2020 and 2021 were recovered. One controller was broken open on one side, and both were severely corroded and damaged by marine life. Both units were disassembled and the memory units flushed with deionized water. After they were dried and vacuum baked, data from these units were retrieved.
+
+All engines had burn damage caused by internal overtemperature typical of oxygen-rich shutdown. Thus, the loss of hydrogen fuel appears to have initiated the shutdown. The Commission reviewed engine and ground measurements made while the three engines were prepared for launch. Ambient temperature during pre-launch was the coldest to date, but preflight engine data were normal. These data were also compared with Challenger engine data during the flight 61-A pre-flight period. All differences seen between the two missions were due either to planned variations in the pre-launch sequence or the cold ambient conditions during the preflight period for flight 51-L. These differences did not affect engine performance during the powered flight phase of the mission.
+
+Preflight data gave no evidence of any propellant leaks (fuel or oxidizer) in the aft compartment. For the powered flight phase all the parameters of the engine aft compartment that could give an indication of a leak were selected from the overall flight 51-L measurement list. The majority of those parameters were either ground measurements or those recorded during the flight but not telemetered to the ground. Among parameters that were telemetered during the flight were skin temperature measurements that gave no indication of a hot gas or other leak in the engine compartment.
+
+Analysis of the engine start data showed all three engine starts were normal and no anomalies were found.
+
+An assessment of the engine performance in the final seconds of the mission before the accident was compared with similar periods on all flights of the Challenger engines. The assessment showed the engine performance on flight 51-L was consistent with previous flights.
+
+The first abnormal engine indication was a drop in engine fuel tank pressure at 72.564 seconds. As fuel pressure dropped, the control system automatically responded by opening the fuel flowrate valve. The turbine temperatures then increased because of the leaner fuel mixture.
+
+The increased temperature caused an increase in pump speed. This could not, however, increase the fuel pressure because of a decrease in fuel tank top (ullage) pressure resulting from the burned through hydrogen tank leakage. When the fuel pump pressures dropped below 140 pounds per square inch, the programed control system disqualified the measured data because it was past reasonable limits. This caused the fuel flowrate and high-pressure fuel pump discharge pressure to decrease, while the lack of load allowed the pump's speed to increase. The decreased fuel flow caused a drop in fuel preburner chamber pressure, though the fuel preburner oxygen valve was then advancing toward a more open position. The mixture ratio in the fuel preburner became leaner, which raised high-pressure fuel turbine discharge temperatures above the redline limits. This caused the engine control system to start automatic shutdown of the engine.
+
+The engine flight history showed that engine 2023 flew four previous times while engines 2020 and 2021 had flown five previous missions. The flight data from flight 51-L compared well with flight data from all previous flights.
+
+The analysis of flight data confirmed that the Space Shuttle Main Engines operated properly while reacting to changing external conditions. Previous engine tests suggest that the highpressure pumps are the most likely components to fail, because of either bearing or turbine blade failure. There was no evidence of either in flight 51-L. Engine operation was normal until the fuel inlet pressure dropped. As the pressure decreased, the engine responded in a predictable manner. Automatic shutdown of engine 2023 was verified by telemetry data. Data recovered from the salvaged engine 2021 control computer verify that this engine also had begun shutdown. Salvaged control computer data from engine 2020 showed that this engine was within 20 milliseconds of shutdown when the computer stopped. Inspection of recovered engine hardware verified that all engines were shut down in a fuel-lean or oxygen-rich condition which resulted in burn through and erosion of the engine hot gas circuits.
+
+The Commission concluded that the Space Shuttle Main Engines did not cause or contribute to the cause of the Challenger accident.
+
+Orbiter and Related Equipment
+
+The Orbiter subsystems include propulsion and power, avionics, structures, thermal and environmental control and life support, mechanical and interface, and other government furnished essential equipment. Onboard government furnished equipment for STS 51 -L included the remote manipulator arm system, extravehicular mobility units, extravehicular activity hardware, television, equipment worn by the crew, storage provisions and communication equipment.
+
+The significant pieces of Orbiter structure recovered included all three Space Shuttle Main Engines, the forward fuselage including the crew module, the right inboard and outboard elevons, a large portion of the right wing, a lower portion of the vertical stabilizer, three rudder speed brake panels and portions of mid-fuselage side walls from both the left and right sides. This represents about 30 percent of the Orbiter but does not provide sufficient evidence to establish conclusively the complete failure sequence of the entire Orbiter spacecraft. However, there was sufficient evidence to establish some of the structural failure modes that resulted in the Orbiter's destruction.
+
+All fractures and material failures examined on the Orbiter, with the exception of the main engines, were the result of overload forces, and they exhibited no evidence of internal burn damage or exposure to explosive forces. This indicated that the destruction of the Orbiter occurred predominantly from aerodynamic and inertial forces that exceeded design limits. There was evidence that during the breakup sequence, the right Solid Rocket Booster struck the outboard end of the Orbiter's right wing and right outboard elevon. Additionally, chemical analysis indicated that the right side of the Orbiter was sprayed by hot propellant gases exhausting from the hole in the inboard circumference of the right Solid Rocket Booster. Evaluation of the Orbiter main engines showed extensive internal thermal damage to the engines as a consequence of oxygen-rich shutdown that resulted from a depletion of the hydrogen fuel supply. The supply of hydrogen fuel to the main engines would have been abruptly discontinued when the liquid hydrogen tank in the External Tank disintegrated.
+
+The crew module wreckage was found submerged in about 90 feet of ocean water concentrated in an area of about 20 feet by 80 feet. Portions of the forward fuselage outer shell structure were found among the pieces of crew module recovered. There was no evidence of an internal explosion, heat or fire damage on the forward fuselage/crew module pieces. The crew module was disintegrated, with the heaviest fragmentation and crash damage on the left side. The fractures examined were typical of overload breaks and appeared to be the result of high forces generated by impact with the surface of the water. The sections of lower forward fuselage outer shell found floating on the ocean surface were recovered shortly after the accident. They also contained crush damage indicative of an impact on the left side. The consistency of damage to the left side of the outer fuselage shell and crew module indicates that these structures remained attached to each other until impact with the water.
+
+The Orbiter investigation consisted of a review of all Orbiter data and vehicle parts retrieved. Also reviewed were vehicle and equipment processing records and pre-mission analyses.
+
+All orbital maneuvering system measurements such as temperatures, pressures, events, commands, stimuli, and switch positions were reviewed with all related computer data. There were no indications of abnormal behavior. All temperature and pressure transducers active during ascent for the reaction control system were reviewed, including thruster chamber pressure, leak temperature, line temperature, propellant tank, helium tank and propellant line transducers. Nothing was found that could have contributed to the accident.
+
+Auxiliary power unit pressures and temperatures were reviewed, and no abnormal conditions were observed during ascent. Selected hydraulic measurements, including system pressures, fluid quantities and most temperatures in the aft compartment and in the wing cavity containing the elevon actuator supply lines, were reviewed by the Commission, and no abnormality was found. All fuel cells and power reactant storage and distribution subsystem measurements were reviewed and found to be normal during all phases of ground and flight operation prior to the accident. All available pyrotechnic firing control circuit measurements were reviewed, along with radiography, shear bolt review and debris reports, and there were no unintentional firing command indications. All available data regarding range safety and recovery system batteries were reviewed, and no indications were found that the batteries were involved in initiating the accident.
+
+Guidance, navigation and control subsystems data were reviewed, and it appears that the subsystems performed properly. All subsystem sensors and software apparently performed as designed until data loss. Inertial measurement unit data from the preflight calibration through signal loss were found to be normal. All data processing system related data were reviewed, and nothing significant was found. Data review of the electrical power distribution and control subsystem indicated that its performance was normal until the time of the accident. All communication and tracking system parameters active during launch were evaluated and found to be normal. No instrumentation abnormalities were observed during the pre-launch and launch period before signal loss.
+
+Structures evaluation included analysis of ground and flight data (loads, temperatures, pressures and purge flows), hardware changes and discrepancy reports since the last Challenger flight, and wreckage. The Commission found that no Orbiter structural elements contributed to the accident.
+
+Orbiter structural pre-launch temperature measurements were evaluated and found to be within specified limits.
+
+Data related to the atmospheric revitalization system, which maintains cabin atmosphere, were evaluated. During pre-launch, launch and until signal loss, data indicated that both of the water coolant loops were normal, the pressure control system functioned normally, all fans functioned normally, and all switches and valve positions were proper.
+
+Active thermal control subsystem data indicated that both of the freon coolant loops functioned normally, the ammonia boiler system was normal, and all switch and valve positions were proper.
+
+The water management subsystem functioned normally during the flight. The smoke detection and fire suppression subsystem and airlock support subsystem both functioned normally. The waste collection subsystem is inoperative during the launch phase, and no data were available.
+
+No mechanical system abnormalities were identified. The vent doors remained open throughout the launch. The payload bay doors remained latched. All landing gear were up and locked, all doors remained closed and locked, and the remote manipulator system and payload retention system remained latched. Film and Orbiter interface data showed that there was no premature Orbiter/External Tank separation.
+
+Video tapes and photographs indicated the crew egress hatch, which caused the launch delay on the preceding day, operated properly.
+
+The onboard government furnished equipment configuration and pre-launch processing were reviewed and determined to have been flightready with no unusual or abnormal conditions.
+
+Based on this review and assessment, the Commission concluded that neither the Orbiter nor related equipment caused or contributed to the cause of the accident.
+
+--- DOCUMENT END ---
+
+Questions:
+1. At what time was the first abnormal main engine indication recorded, and what was that indication?
+2. About what percentage of the Orbiter structure was recovered?
+3. On what date were the three main engines recovered, and in about how deep water?

@@ -1,0 +1,30 @@
+{
+  "test": "short",
+  "items": [
+    {
+      "id": "lower_pressure",
+      "description": "Mentions lower atmospheric (air) pressure at altitude",
+      "type": "keywords",
+      "any_of": ["lower atmospheric pressure", "lower air pressure", "lower pressure", "less pressure", "reduced pressure", "pressure is lower", "pressure decreases", "pressure drops", "thinner air"]
+    },
+    {
+      "id": "vapor_pressure_rule",
+      "description": "States that water boils when its vapor pressure equals surrounding pressure (or equivalent)",
+      "type": "keywords",
+      "any_of": ["vapor pressure", "vapour pressure"]
+    },
+    {
+      "id": "less_heat_needed",
+      "description": "Concludes that less heat / lower temperature is needed to boil",
+      "type": "keywords",
+      "any_of": ["lower temperature", "less heat", "less energy", "less thermal energy", "lower temperatures", "cooler temperature"]
+    },
+    {
+      "id": "two_or_three_sentences",
+      "description": "Stays within two or three sentences",
+      "type": "sentence_count",
+      "min": 2,
+      "max": 3
+    }
+  ]
+}
