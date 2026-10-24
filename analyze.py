@@ -38,8 +38,7 @@ SERVICE_LABELS = {"cerebras": "Cerebras", "together": "Together AI"}
 SERVICE_COLORS = {"cerebras": "#F05A28", "together": "#2F6FDE"}
 TEST_LABELS = {"short": "Test A: short prompt (~100 tokens)", "long": "Test B: long prompt (~4,460 tokens)"}
 DELAY_THRESHOLD_S = 10  # first answer chunk later than this counts as a delayed request
-LOG_TICKS = (0.2, 0.5, 1, 2, 5, 10, 20, 50)
-
+OUTPUT_SPEED_Y_MAX = 3500  # faster short-stream runs are chunk-timing artifacts; drawn as markers at the top edge
 
 def load_measured():
     records = [json.loads(line) for line in SCORED_FILE.open(encoding="utf-8")]
@@ -110,13 +109,25 @@ def markdown_table(summary):
     return "\n".join(lines)
 
 
-def strip_chart(frame, metric, title, y_label, output_path, log_scale=False):
+def count_phrase(count, singular, plural):
+    return f"{count} {singular if count == 1 else plural}"
+
+
+def strip_chart(frame, metric, title, y_label, output_path, y_max=None):
     fig, axes = plt.subplots(1, 2, figsize=(12, 6.75), dpi=100, sharey=True, facecolor="white")
     for axis, test in zip(axes, TESTS):
         for position, service in enumerate(SERVICES):
             values = frame[(frame["test"] == test) & (frame["service"] == service) & frame["error"].isna()][metric].dropna()
             offsets = [position + ((i % 7) - 3) * 0.04 for i in range(len(values))]
-            axis.scatter(offsets, values, s=45, alpha=0.75, color=SERVICE_COLORS[service], edgecolor="black", linewidth=0.4, zorder=3)
+            in_range = [(offset, value) for offset, value in zip(offsets, values) if y_max is None or value <= y_max]
+            above_range = [(offset, value) for offset, value in zip(offsets, values) if y_max is not None and value > y_max]
+            axis.scatter([offset for offset, _ in in_range], [value for _, value in in_range], s=45, alpha=0.75,
+                         color=SERVICE_COLORS[service], edgecolor="black", linewidth=0.4, zorder=3)
+            for offset, value in above_range:
+                axis.scatter(offset, y_max, s=90, marker="^", color=SERVICE_COLORS[service],
+                             edgecolor="black", linewidth=0.6, zorder=5, clip_on=False)
+                axis.annotate(f"{value:,.0f} (timing artifact, see note)", (offset, y_max),
+                              xytext=(12, -4), textcoords="offset points", va="top", fontsize=9, color="black")
             median = values.median()
             axis.hlines(median, position - 0.25, position + 0.25, color="black", linewidth=2.5, zorder=4)
             axis.annotate(f"median {median:,.2f}" if median < 100 else f"median {median:,.0f}",
@@ -137,15 +148,7 @@ def strip_chart(frame, metric, title, y_label, output_path, log_scale=False):
         axis.set_title(TEST_LABELS[test], fontsize=12)
         axis.grid(axis="y", color="#cccccc", linewidth=0.6, zorder=0)
         axis.set_facecolor("white")
-        if log_scale:
-            axis.set_yscale("log")
-    if log_scale:
-        low, high = axes[0].get_ylim()
-        ticks = [tick for tick in LOG_TICKS if low <= tick <= high]
-        axes[0].set_yticks(ticks, [f"{tick:g}" for tick in ticks])
-        axes[0].set_ylim(low, high)
-        for axis in axes:
-            axis.minorticks_off()
+    axes[0].set_ylim(0, y_max)
     axes[0].set_ylabel(y_label, fontsize=11)
     fig.suptitle(title, fontsize=15, fontweight="bold")
     fig.text(0.5, 0.01, "gpt-oss-120b, 20 runs per service per test, every run shown; black bar = median. "
@@ -169,15 +172,19 @@ def quality_chart(frame, manual_verdicts, output_path):
             perfect_count = int((scores == 100).sum())
             axis.hlines(mean_score, position - 0.25, position + 0.25,
                         color="black", linewidth=2.5, zorder=4)
-            axis.annotate(
-                f"mean {mean_score:.0f}%\n{perfect_count}/{len(scores)} perfect",
-                (position + 0.27, mean_score), va="center", fontsize=9, color="black",
-            )
             missed = runs[runs["quality_score"] < runs["quality_max"]]
+            verdicts = [verdict_by_run.get((service, run_id)) for run_id in missed["run_id"]]
+            correct_after_review = perfect_count + verdicts.count("correct")
+            axis.annotate(f"mean {mean_score:.0f}%", (position + 0.27, mean_score), va="center", fontsize=9, color="black")
+            if correct_after_review == perfect_count:
+                count_label = f"{perfect_count}/{len(scores)} perfect"
+            else:
+                count_label = (f"Automatic: {perfect_count}/{len(scores)} perfect /\n"
+                               f"After review: {correct_after_review}/{len(scores)} correct")
+            axis.annotate(count_label, (position, mean_score - 4), ha="center", va="top", fontsize=9, color="black")
             if len(missed):
-                verdicts = [verdict_by_run.get((service, run_id)) for run_id in missed["run_id"]]
-                parts = [f"{verdicts.count('imperfect')} substantive misses",
-                         f"{verdicts.count('correct')} scorer false negatives",
+                parts = [count_phrase(verdicts.count("imperfect"), "substantive miss", "substantive misses"),
+                         count_phrase(verdicts.count("correct"), "scorer false negative", "scorer false negatives"),
                          f"{verdicts.count(None)} pending review"]
                 axis.annotate(
                     "Manual review:\n" + "\n".join(part for part in parts if not part.startswith("0 ")),
@@ -211,9 +218,9 @@ def main():
 
     CHARTS_DIR.mkdir(exist_ok=True)
     strip_chart(frame, "first_answer_chunk_s", "Time to first answer chunk (lower is better)",
-                "Seconds (log scale)", CHARTS_DIR / "time_to_first_answer.png", log_scale=True)
+                "Seconds", CHARTS_DIR / "time_to_first_answer.png")
     strip_chart(frame, "output_tok_per_s", "Output speed (higher is better)",
-                "Tokens per second", CHARTS_DIR / "output_speed.png")
+                "Tokens per second", CHARTS_DIR / "output_speed.png", y_max=OUTPUT_SPEED_Y_MAX)
     quality_chart(frame, manual_verdicts, CHARTS_DIR / "quality_score.png")
 
     print(markdown_table(summary))
